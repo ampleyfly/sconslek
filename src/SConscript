@@ -1,0 +1,13 @@
+# Get hold of build environment from calling SConscript
+Import('env')
+
+# Build a lot of programs, with different defines
+programs = []
+for i in range(100):
+    tmpenv = env.Clone()
+    tmpenv['CCFLAGS'] += [f'-DFOO={i}']
+    objs = tmpenv.Object(f'foo{i}.o', 'foo.c')
+    programs.append(tmpenv.Program(f'foo{i}', objs))
+
+# Return all the programs to calling SConscript
+Return('programs')
